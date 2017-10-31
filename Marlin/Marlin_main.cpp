@@ -488,6 +488,8 @@ static uint8_t target_extruder;
 
 #if ENABLED(Z_DUAL_ENDSTOPS)
   float z_endstop_adj = 0;
+#elif ENABLED(Z_TRIPLE_ENDSTOPS)
+  float z_endstop_adj[3] = {0};
 #endif
 
 // Extruder offsets
@@ -2634,6 +2636,9 @@ static void homeaxis(AxisEnum axis) {
   #if ENABLED(Z_DUAL_ENDSTOPS)
     if (axis == Z_AXIS) stepper.set_homing_flag(true);
   #endif
+  #if ENABLED(Z_TRIPLE_ENDSTOPS)
+    if (axis == Z_AXIS) stepper.set_homing_flag(true);
+  #endif
 
   // Fast move towards endstop until triggered
   #if ENABLED(DEBUG_LEVELING_FEATURE)
@@ -2681,6 +2686,41 @@ static void homeaxis(AxisEnum axis) {
       do_homing_move(axis, adj);
 
       if (lockZ1) stepper.set_z_lock(false); else stepper.set_z2_lock(false);
+      stepper.set_homing_flag(false);
+    } // Z_AXIS
+  #endif
+
+  #if ENABLED(Z_TRIPLE_ENDSTOPS)
+    if (axis == Z_AXIS) {
+      for (int i = 0; i<3; i++)
+      {
+        float adj = fabs(z_endstop_adj[i]);
+        bool lock;
+        if (axis_home_dir > 0) {
+          adj = -adj;
+          lock = (z_endstop_adj[i] > 0);
+        }
+        else
+          lock = (z_endstop_adj[i] < 0);
+  
+        if (lock)  // lock i-th motor, move other motors
+        {
+          stepper.set_z_lock(i==0);
+          stepper.set_z2_lock(i==1);
+          stepper.set_z3_lock(i==2);
+        }
+        else // lock other motors, move i-th motor
+        {
+          stepper.set_z_lock(i!==0);
+          stepper.set_z2_lock(i!==1);
+          stepper.set_z3_lock(i!==2);
+        }
+        // Move to the adjusted endstop height
+        do_homing_move(axis, adj);
+      }
+      stepper.set_z_lock(false);
+      stepper.set_z2_lock(false);
+      stepper.set_z3_lock(false);
       stepper.set_homing_flag(false);
     } // Z_AXIS
   #endif
@@ -6347,6 +6387,19 @@ inline void gcode_M206() {
     if (code_seen('Z')) z_endstop_adj = code_value_axis_units(Z_AXIS);
     SERIAL_ECHOLNPAIR("Z Endstop Adjustment set to (mm):", z_endstop_adj);
   }
+#elif ENABLED(Z_TRIPLE_ENDSTOPS) // !DELTA && ENABLED(Z_DUAL_ENDSTOPS)
+
+  /**
+   * M666: For Z Dual Endstop setup, set z axis offset to the z2 axis.
+   */
+  inline void gcode_M666() {
+    if (code_seen('Z')) z_endstop_adj[0] = code_value_axis_units(Z_AXIS);
+    SERIAL_ECHOLNPAIR("Z1 Endstop Adjustment set to (mm):", z_endstop_adj[0]);
+    if (code_seen('Z')) z_endstop_adj[1] = code_value_axis_units(Z_AXIS); // TODO: find correct command
+    SERIAL_ECHOLNPAIR("Z2 Endstop Adjustment set to (mm):", z_endstop_adj[1]);
+    if (code_seen('Z')) z_endstop_adj[2] = code_value_axis_units(Z_AXIS); // TODO: find correct command
+    SERIAL_ECHOLNPAIR("Z3 Endstop Adjustment set to (mm):", z_endstop_adj[2]);
+  }
 
 #endif // !DELTA && Z_DUAL_ENDSTOPS
 
@@ -8406,7 +8459,7 @@ void process_next_command() {
           break;
       #endif
 
-      #if ENABLED(DELTA) || ENABLED(Z_DUAL_ENDSTOPS)
+      #if ENABLED(DELTA) || ENABLED(Z_DUAL_ENDSTOPS) || ENABLED(Z_TRIPLE_ENDSTOPS)
         case 666: // M666: Set delta or dual endstop adjustment
           gcode_M666();
           break;

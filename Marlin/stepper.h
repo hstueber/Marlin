@@ -87,7 +87,7 @@ class Stepper {
       static bool abort_on_endstop_hit;
     #endif
 
-    #if ENABLED(Z_DUAL_ENDSTOPS)
+    #if ENABLED(Z_DUAL_ENDSTOPS)||ENABLED(Z_TRIPLE_ENDSTOPS)
       static bool performing_homing;
     #endif
 
@@ -98,6 +98,9 @@ class Stepper {
 
     #if ENABLED(Z_DUAL_ENDSTOPS)
       static bool locked_z_motor, locked_z2_motor;
+    #endif
+    #if ENABLED(Z_TRIPLE_ENDSTOPS)
+      static bool locked_z_motor, locked_z2_motor, locked_z2_motor;
     #endif
 
     // Counter variables for the Bresenham line tracer
@@ -254,6 +257,13 @@ class Stepper {
       static FORCE_INLINE void set_homing_flag(bool state) { performing_homing = state; }
       static FORCE_INLINE void set_z_lock(bool state) { locked_z_motor = state; }
       static FORCE_INLINE void set_z2_lock(bool state) { locked_z2_motor = state; }
+    #endif
+
+    #if ENABLED(Z_TRIPLE_ENDSTOPS)
+      static FORCE_INLINE void set_homing_flag(bool state) { performing_homing = state; }
+      static FORCE_INLINE void set_z_lock(bool state) { locked_z_motor = state; }
+      static FORCE_INLINE void set_z2_lock(bool state) { locked_z2_motor = state; }
+      static FORCE_INLINE void set_z3_lock(bool state) { locked_z3_motor = state; }
     #endif
 
     #if ENABLED(BABYSTEPPING)

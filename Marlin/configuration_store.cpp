@@ -84,6 +84,9 @@
  *
  * Z_DUAL_ENDSTOPS:
  *  301  M666 Z    z_endstop_adj (float)
+ *  
+ * Z_TRIPLE_ENDSTOPS:
+ *  302  M666 Z    z_endstop_adj (float x3)
  *
  * ULTIPANEL:
  *  305  M145 S0 H lcd_preheat_hotend_temp (int x2)
@@ -268,6 +271,12 @@ void Config_Postprocess() {
       EEPROM_WRITE(z_endstop_adj);            // 1 float
       dummy = 0.0f;
       for (uint8_t q = 8; q--;) EEPROM_WRITE(dummy);
+    #elif ENABLED(Z_TRIPLE_ENDSTOPS)
+      EEPROM_WRITE(z_endstop_adj[0]);            // 1 float
+      EEPROM_WRITE(z_endstop_adj[1]);            // 1 float
+      EEPROM_WRITE(z_endstop_adj[2]);            // 1 float
+      dummy = 0.0f;
+      for (uint8_t q = 6; q--;) EEPROM_WRITE(dummy);
     #else
       dummy = 0.0f;
       for (uint8_t q = 9; q--;) EEPROM_WRITE(dummy);
@@ -454,6 +463,12 @@ void Config_Postprocess() {
         EEPROM_READ(z_endstop_adj);
         dummy = 0.0f;
         for (uint8_t q=8; q--;) EEPROM_READ(dummy);
+      #elif ENABLED(Z_TRIPLE_ENDSTOPS)
+        EEPROM_READ(z_endstop_adj[0]);
+        EEPROM_READ(z_endstop_adj[1]);
+        EEPROM_READ(z_endstop_adj[2]);
+        dummy = 0.0f;
+        for (uint8_t q=6; q--;) EEPROM_READ(dummy);
       #else
         dummy = 0.0f;
         for (uint8_t q=9; q--;) EEPROM_READ(dummy);
@@ -627,6 +642,10 @@ void Config_ResetDefault() {
     delta_diagonal_rod_trim_tower_3 = DELTA_DIAGONAL_ROD_TRIM_TOWER_3;
   #elif ENABLED(Z_DUAL_ENDSTOPS)
     z_endstop_adj = 0;
+  #elif ENABLED(Z_TRIPLE_ENDSTOPS)
+    z_endstop_adj[0] = 0;
+    z_endstop_adj[1] = 0;
+    z_endstop_adj[2] = 0;
   #endif
 
   #if ENABLED(ULTIPANEL)

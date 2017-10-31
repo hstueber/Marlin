@@ -393,8 +393,130 @@
       #endif
     #endif
   #endif
+  #if ENABLED(Z_TRIPLE_ENDSTOPS)
+    #define _XMIN_ 100
+    #define _YMIN_ 200
+    #define _ZMIN_ 300
+    #define _XMAX_ 101
+    #define _YMAX_ 201
+    #define _ZMAX_ 301
+    #if Z2_USE_ENDSTOP == _XMIN_
+      #define USE_XMIN_PLUG
+    #elif Z2_USE_ENDSTOP == _XMAX_
+      #define USE_XMAX_PLUG
+    #elif Z2_USE_ENDSTOP == _YMIN_
+      #define USE_YMIN_PLUG
+    #elif Z2_USE_ENDSTOP == _YMAX_
+      #define USE_YMAX_PLUG
+    #elif Z2_USE_ENDSTOP == _ZMIN_
+      #define USE_ZMIN_PLUG
+    #elif Z2_USE_ENDSTOP == _ZMAX_
+      #define USE_ZMAX_PLUG
+    #endif
+    #if Z3_USE_ENDSTOP == _XMIN_
+      #define USE_XMIN_PLUG
+    #elif Z3_USE_ENDSTOP == _XMAX_
+      #define USE_XMAX_PLUG
+    #elif Z3_USE_ENDSTOP == _YMIN_
+      #define USE_YMIN_PLUG
+    #elif Z3_USE_ENDSTOP == _YMAX_
+      #define USE_YMAX_PLUG
+    #elif Z3_USE_ENDSTOP == _ZMIN_
+      #define USE_ZMIN_PLUG
+    #elif Z3_USE_ENDSTOP == _ZMAX_
+      #define USE_ZMAX_PLUG
+    #endif
+    #if Z_HOME_DIR > 0
+      #if Z2_USE_ENDSTOP == _XMIN_
+        #define Z2_MAX_ENDSTOP_INVERTING X_MIN_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN X_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _XMAX_
+        #define Z2_MAX_ENDSTOP_INVERTING X_MAX_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN X_MAX_PIN
+      #elif Z2_USE_ENDSTOP == _YMIN_
+        #define Z2_MAX_ENDSTOP_INVERTING Y_MIN_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN Y_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _YMAX_
+        #define Z2_MAX_ENDSTOP_INVERTING Y_MAX_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN Y_MAX_PIN
+      #elif Z2_USE_ENDSTOP == _ZMIN_
+        #define Z2_MAX_ENDSTOP_INVERTING Z_MIN_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN Z_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _ZMAX_
+        #define Z2_MAX_ENDSTOP_INVERTING Z_MAX_ENDSTOP_INVERTING
+        #define Z2_MAX_PIN Z_MAX_PIN
+      #else
+        #define Z2_MAX_ENDSTOP_INVERTING false
+      #endif
+      #if Z3_USE_ENDSTOP == _XMIN_
+        #define Z3_MAX_ENDSTOP_INVERTING X_MIN_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN X_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _XMAX_
+        #define Z3_MAX_ENDSTOP_INVERTING X_MAX_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN X_MAX_PIN
+      #elif Z3_USE_ENDSTOP == _YMIN_
+        #define Z3_MAX_ENDSTOP_INVERTING Y_MIN_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN Y_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _YMAX_
+        #define Z3_MAX_ENDSTOP_INVERTING Y_MAX_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN Y_MAX_PIN
+      #elif Z3_USE_ENDSTOP == _ZMIN_
+        #define Z3_MAX_ENDSTOP_INVERTING Z_MIN_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN Z_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _ZMAX_
+        #define Z3_MAX_ENDSTOP_INVERTING Z_MAX_ENDSTOP_INVERTING
+        #define Z3_MAX_PIN Z_MAX_PIN
+      #else
+        #define Z3_MAX_ENDSTOP_INVERTING false
+      #endif
+    #else
+      #if Z2_USE_ENDSTOP == _XMIN_
+        #define Z2_MIN_ENDSTOP_INVERTING X_MIN_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN X_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _XMAX_
+        #define Z2_MIN_ENDSTOP_INVERTING X_MAX_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN X_MAX_PIN
+      #elif Z2_USE_ENDSTOP == _YMIN_
+        #define Z2_MIN_ENDSTOP_INVERTING Y_MIN_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN Y_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _YMAX_
+        #define Z2_MIN_ENDSTOP_INVERTING Y_MAX_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN Y_MAX_PIN
+      #elif Z2_USE_ENDSTOP == _ZMIN_
+        #define Z2_MIN_ENDSTOP_INVERTING Z_MIN_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN Z_MIN_PIN
+      #elif Z2_USE_ENDSTOP == _ZMAX_
+        #define Z2_MIN_ENDSTOP_INVERTING Z_MAX_ENDSTOP_INVERTING
+        #define Z2_MIN_PIN Z_MAX_PIN
+      #else
+        #define Z2_MIN_ENDSTOP_INVERTING false
+      #endif
+      #if Z3_USE_ENDSTOP == _XMIN_
+        #define Z3_MIN_ENDSTOP_INVERTING X_MIN_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN X_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _XMAX_
+        #define Z3_MIN_ENDSTOP_INVERTING X_MAX_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN X_MAX_PIN
+      #elif Z3_USE_ENDSTOP == _YMIN_
+        #define Z3_MIN_ENDSTOP_INVERTING Y_MIN_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN Y_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _YMAX_
+        #define Z3_MIN_ENDSTOP_INVERTING Y_MAX_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN Y_MAX_PIN
+      #elif Z3_USE_ENDSTOP == _ZMIN_
+        #define Z3_MIN_ENDSTOP_INVERTING Z_MIN_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN Z_MIN_PIN
+      #elif Z3_USE_ENDSTOP == _ZMAX_
+        #define Z3_MIN_ENDSTOP_INVERTING Z_MAX_ENDSTOP_INVERTING
+        #define Z3_MIN_PIN Z_MAX_PIN
+      #else
+        #define Z3_MIN_ENDSTOP_INVERTING false
+      #endif
+    #endif
+  #endif
 
   #define IS_Z2_OR_PROBE(P) (P == Z2_MIN_PIN || P == Z2_MAX_PIN || P == Z_MIN_PROBE_PIN)
+  #define IS_Z3_OR_PROBE(P) (P == Z3_MIN_PIN || P == Z3_MAX_PIN || P == Z_MIN_PROBE_PIN)
 
   /**
    * Set ENDSTOPPULLUPS for active endstop switches
@@ -467,6 +589,8 @@
   #define HAS_Z_MAX (PIN_EXISTS(Z_MAX) && !IS_Z2_OR_PROBE(Z_MAX_PIN))
   #define HAS_Z2_MIN (PIN_EXISTS(Z2_MIN))
   #define HAS_Z2_MAX (PIN_EXISTS(Z2_MAX))
+  #define HAS_Z3_MIN (PIN_EXISTS(Z3_MIN))
+  #define HAS_Z3_MAX (PIN_EXISTS(Z3_MAX))
   #define HAS_Z_MIN_PROBE_PIN (PIN_EXISTS(Z_MIN_PROBE))
   #define HAS_SOLENOID_1 (PIN_EXISTS(SOL1))
   #define HAS_SOLENOID_2 (PIN_EXISTS(SOL2))
@@ -485,6 +609,7 @@
   #define HAS_Y2_ENABLE (PIN_EXISTS(Y2_ENABLE))
   #define HAS_Z_ENABLE (PIN_EXISTS(Z_ENABLE))
   #define HAS_Z2_ENABLE (PIN_EXISTS(Z2_ENABLE))
+  #define HAS_Z3_ENABLE (PIN_EXISTS(Z3_ENABLE))
   #define HAS_E0_ENABLE (PIN_EXISTS(E0_ENABLE))
   #define HAS_E1_ENABLE (PIN_EXISTS(E1_ENABLE))
   #define HAS_E2_ENABLE (PIN_EXISTS(E2_ENABLE))
@@ -496,6 +621,7 @@
   #define HAS_Y2_DIR (PIN_EXISTS(Y2_DIR))
   #define HAS_Z_DIR (PIN_EXISTS(Z_DIR))
   #define HAS_Z2_DIR (PIN_EXISTS(Z2_DIR))
+  #define HAS_Z3_DIR (PIN_EXISTS(Z3_DIR))
   #define HAS_E0_DIR (PIN_EXISTS(E0_DIR))
   #define HAS_E1_DIR (PIN_EXISTS(E1_DIR))
   #define HAS_E2_DIR (PIN_EXISTS(E2_DIR))
@@ -507,6 +633,7 @@
   #define HAS_Y2_STEP (PIN_EXISTS(Y2_STEP))
   #define HAS_Z_STEP (PIN_EXISTS(Z_STEP))
   #define HAS_Z2_STEP (PIN_EXISTS(Z2_STEP))
+  #define HAS_Z3_STEP (PIN_EXISTS(Z3_STEP))
   #define HAS_E0_STEP (PIN_EXISTS(E0_STEP))
   #define HAS_E1_STEP (PIN_EXISTS(E1_STEP))
   #define HAS_E2_STEP (PIN_EXISTS(E2_STEP))

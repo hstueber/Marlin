@@ -249,7 +249,7 @@
 // Dual X Steppers
 // Uncomment this option to drive two X axis motors.
 // The next unused E driver will be assigned to the second X stepper.
-//#define X_DUAL_STEPPER_DRIVERS
+#define X_DUAL_STEPPER_DRIVERS
 #if ENABLED(X_DUAL_STEPPER_DRIVERS)
   // Set true if the two X motors need to rotate in opposite directions
   #define INVERT_X2_VS_X_DIR true
@@ -285,6 +285,17 @@
 
   #if ENABLED(Z_DUAL_ENDSTOPS)
     #define Z2_USE_ENDSTOP _XMAX_
+  #endif
+
+#endif // Z_DUAL_STEPPER_DRIVERS
+
+#if ENABLED(Z_TRIPLE_STEPPER_DRIVERS)
+
+  #define Z_TRIPLE_ENDSTOPS
+
+  #if ENABLED(Z_TRIPLE_ENDSTOPS)
+    #define Z2_USE_ENDSTOP _XMAX_
+    #define Z3_USE_ENDSTOP _ZMAX_
   #endif
 
 #endif // Z_DUAL_STEPPER_DRIVERS

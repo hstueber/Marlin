@@ -259,6 +259,39 @@
   #define Z2_STEP_READ READ(Z2_STEP_PIN)
 #endif
 
+// Z2 Stepper
+#if HAS_Z3_ENABLE
+  #if ENABLED(HAVE_L6470DRIVER) && ENABLED(Z3_IS_L6470)
+    extern L6470 stepperZ3;
+    #define Z3_ENABLE_INIT NOOP
+    #define Z3_ENABLE_WRITE(STATE) do{if(STATE) stepperZ3.Step_Clock(stepperZ3.getStatus() & STATUS_HIZ); else stepperZ3.softFree();}while(0)
+    #define Z3_ENABLE_READ (stepperZ3.getStatus() & STATUS_HIZ)
+    #define Z3_DIR_INIT NOOP
+    #define Z3_DIR_WRITE(STATE) stepperZ3.Step_Clock(STATE)
+    #define Z3_DIR_READ (stepperZ3.getStatus() & STATUS_DIR)
+  #else
+    #if ENABLED(HAVE_TMCDRIVER) && ENABLED(Z3_IS_TMC)
+      extern TMC26XStepper stepperZ3;
+      #define Z3_ENABLE_INIT NOOP
+      #define Z3_ENABLE_WRITE(STATE) stepperZ3.setEnabled(STATE)
+      #define Z3_ENABLE_READ stepperZ3.isEnabled()
+    #else
+      #if ENABLED(HAVE_TMC2130DRIVER) && ENABLED(Z3_IS_TMC2130)
+        extern Trinamic_TMC2130 stepperZ3;
+      #endif
+      #define Z3_ENABLE_INIT SET_OUTPUT(Z3_ENABLE_PIN)
+      #define Z3_ENABLE_WRITE(STATE) WRITE(Z3_ENABLE_PIN,STATE)
+      #define Z3_ENABLE_READ READ(Z3_ENABLE_PIN)
+    #endif
+    #define Z3_DIR_INIT SET_OUTPUT(Z3_DIR_PIN)
+    #define Z3_DIR_WRITE(STATE) WRITE(Z3_DIR_PIN,STATE)
+    #define Z3_DIR_READ READ(Z3_DIR_PIN)
+  #endif
+  #define Z3_STEP_INIT SET_OUTPUT(Z3_STEP_PIN)
+  #define Z3_STEP_WRITE(STATE) WRITE(Z3_STEP_PIN,STATE)
+  #define Z3_STEP_READ READ(Z3_STEP_PIN)
+#endif
+
 // E0 Stepper
 #if ENABLED(HAVE_L6470DRIVER) && ENABLED(E0_IS_L6470)
   extern L6470 stepperE0;
